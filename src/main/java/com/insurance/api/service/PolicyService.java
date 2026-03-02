@@ -1,11 +1,12 @@
 package com.insurance.api.service;
 
 import com.insurance.api.domain.*;
-import com.insurance.api.dto.LifePolicyRequest;
 import com.insurance.api.exception.BusinessException;
-import com.insurance.api.repository.PolicyRepository;
+import com.insurance.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -13,23 +14,19 @@ public class PolicyService {
 
     private final PolicyRepository policyRepository;
 
-    public LifePolicy createLifePolicy(LifePolicyRequest request) {
+    public List<Policy> getPoliciesByClient(Long clientId) {
+        return policyRepository.findByClientId(clientId);
+    }
 
-        boolean exists = policyRepository
-                .existsByClientIdAndType(request.getClientId(), PolicyType.VIDA);
+    public Policy getPolicy(Long id) {
+        return policyRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Policy not found"));
+    }
 
-        if (exists) {
-            throw new BusinessException("Client already has a life policy");
+    public void deletePolicy(Long id) {
+        if (!policyRepository.existsById(id)) {
+            throw new BusinessException("Policy not found");
         }
-
-        LifePolicy policy = new LifePolicy();
-        policy.setType(PolicyType.VIDA);
-        policy.setInsuredAmount(request.getInsuredAmount());
-
-        Client client = new Client();
-        client.setId(request.getClientId());
-        policy.setClient(client);
-
-        return policyRepository.save(policy);
+        policyRepository.deleteById(id);
     }
 }

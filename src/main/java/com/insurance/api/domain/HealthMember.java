@@ -10,17 +10,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Beneficiary {
+public class HealthMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private String relationship;
+    private String relationship; // CLIENT, FATHER, MOTHER, SPOUSE, CHILD
+    private Double extraCost;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "life_policy_id")
+    @JoinColumn(name = "health_policy_id")
     @JsonIgnore
-    private LifePolicy lifePolicy;
+    private HealthPolicy healthPolicy;
 }

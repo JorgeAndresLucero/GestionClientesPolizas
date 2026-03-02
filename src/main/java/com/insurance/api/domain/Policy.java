@@ -10,6 +10,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -19,8 +20,9 @@ public abstract class Policy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private PolicyType type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Client client;
 }

@@ -12,20 +12,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClientController {
 
-    private final ClientService service;
+    private final ClientService clientService;
 
     @PostMapping
     public Client create(@RequestBody Client client) {
-        return service.create(client);
+        return clientService.create(client);
     }
 
     @GetMapping
     public List<Client> findAll() {
-        return service.findAll();
+        return clientService.findAll();
     }
 
     @GetMapping("/{id}")
     public Client findById(@PathVariable Long id) {
-        return service.findById(id);
+        return clientService.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Client updateClient(@PathVariable Long id,
+                               @RequestBody Client request) {
+        return clientService.updateClient(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public Client deleteClient(@PathVariable Long id) {
+        return clientService.deleteClient(id);
     }
 }

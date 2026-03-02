@@ -1,5 +1,6 @@
 package com.insurance.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,17 +11,20 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Beneficiary {
+
+public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String relationship;
+    private String plate;
+    private String brand;
+    private String model;
+    private Integer vehicleYear;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "life_policy_id")
-    @JsonIgnore
-    private LifePolicy lifePolicy;
+    @JoinColumn(name = "vehicle_policy_id")
+    @JsonBackReference
+    private VehiclePolicy vehiclePolicy;
 }
