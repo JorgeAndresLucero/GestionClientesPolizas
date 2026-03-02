@@ -15,12 +15,38 @@ import org.springframework.stereotype.Service;
 
 import static com.insurance.api.domain.PolicyType.VEHICULO;
 
+/**
+ * Servicio para la gestión de operaciones de negocio relacionadas con pólizas de vehículos.
+ * <p>
+ * Proporciona funcionalidad para crear pólizas de vehículos y añadir vehículos
+ * a las pólizas existentes.
+ * </p>
+ *
+ * @author Insurance API Team
+ * @version 1.0.0
+ * @see VehiclePolicy
+ * @see Vehicle
+ * @see VehiclePolicyRepository
+ * @see VehicleRepository
+ */
 @Service
 @RequiredArgsConstructor
 public class VehicleService {
     private final VehiclePolicyRepository vehiclePolicyRepository;
     private final VehicleRepository vehicleRepository;
     private final ClientRepository clientRepository;
+    
+    /**
+     * Añade un nuevo vehículo a una póliza de vehículo existente.
+     * <p>
+     * Valida que la póliza exista y sea del tipo correcto (VEHICULO).
+     * </p>
+     *
+     * @param policyId identificador único de la póliza de vehículo
+     * @param request objeto {@link VehicleRequest} con los datos del vehículo
+     * @return el vehículo añadido a la póliza
+     * @throws BusinessException si no se encuentra la póliza o es de tipo inválido
+     */
     public Vehicle addVehicle(Long policyId, VehicleRequest request) {
 
         VehiclePolicy policy = vehiclePolicyRepository.findById(policyId)
@@ -40,6 +66,12 @@ public class VehicleService {
         return vehicleRepository.save(vehicle);
     }
 
+    /**
+     * Crea una nueva póliza de vehículo para un cliente.
+     *
+     * @param request objeto {@link VehiclePolicyRequest} con los datos de la póliza
+     * @return la póliza de vehículo creada
+     */
     public VehiclePolicy createVehiclePolicy(VehiclePolicyRequest request) {
 
         VehiclePolicy policy = new VehiclePolicy();
